@@ -657,6 +657,17 @@ bool Element::intersects(const QRectF& rr) const
 
 void Element::writeProperties(Xml& xml) const
       {
+        // print page possition for all elements
+        xml.tag("PagePossition", this->pagePos());
+
+        //if current element is line then print tag offset or pos (for x)
+        if(this->isSLineSegment()) {
+            if(this->type() == Element::Type::VOLTA_SEGMENT) {
+                xml.tag("offset", userOff() / spatium());
+            } else {
+                xml.tag("pos", pos() / score()->spatium()); }
+        }
+
       //copy paste should not keep links
       if (_links && (_links->size() > 1) && !xml.clipboardmode)
             xml.tag("lid", _links->lid());
@@ -666,8 +677,14 @@ void Element::writeProperties(Xml& xml) const
                 || (xml.clipboardmode && isSLineSegment()))
                   xml.tag("offset", userOff() / spatium());
             else
-                  xml.tag("pos", pos() / score()->spatium());
+                xml.tag("pos", pos() / score()->spatium());
+
+//            xml.tag("_pos", _pos);
+//            xml.tag("_userOff", _userOff);
+//            xml.tag("spatium", score()->spatium());
             }
+
+
       if (((track() != xml.curTrack) || (type() == Element::Type::SLUR)) && (track() != -1)) {
             int t;
             t = track() + xml.trackDiff;
@@ -685,7 +702,7 @@ void Element::writeProperties(Xml& xml) const
       writeProperty(xml, P_ID::VISIBLE);
       writeProperty(xml, P_ID::PLACEMENT);
       }
-
+      
 //---------------------------------------------------------
 //   readProperties
 //---------------------------------------------------------

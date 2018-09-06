@@ -1767,6 +1767,10 @@ void Measure::write(Xml& xml, int staff, bool writeSystemElements, bool forceTim
 
       int strack = staff * VOICES;
       int etrack = strack + VOICES;
+
+      xml.tag("BarWidth", this->width()); // added new tag written bar width
+      xml.tag("PagePossition", this->pagePos()); // write page possition of bar
+
       foreach (const Element* el, _el) {
             if (!el->generated() && ((el->staffIdx() == staff) || (el->systemFlag() && writeSystemElements))) {
                   el->write(xml);

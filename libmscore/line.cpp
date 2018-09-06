@@ -935,8 +935,8 @@ void SLine::writeProperties(Xml& xml) const
                   break;
                   }
             }
-      if (!modified)
-            return;
+//      if (!modified)
+//            return;
 
       //
       // write user modified layout
@@ -948,6 +948,7 @@ void SLine::writeProperties(Xml& xml) const
             xml.tag("subtype", int(seg->spannerSegmentType()));
             xml.tag("off2", seg->userOff2() / _spatium);
             seg->Element::writeProperties(xml);
+            xml.tag("LineWidth", seg->pos2().rx()); // added new tag written line width
             xml.etag();
             }
       }
