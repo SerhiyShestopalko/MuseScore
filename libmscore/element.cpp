@@ -668,6 +668,11 @@ void Element::writeProperties(Xml& xml) const
                 xml.tag("pos", pos() / score()->spatium()); }
         }
 
+        // write pos for all dynamics
+        if(this->type() == Element::Type::DYNAMIC) {
+            xml.tag("pos", pos() / score()->spatium());
+        }
+
       //copy paste should not keep links
       if (_links && (_links->size() > 1) && !xml.clipboardmode)
             xml.tag("lid", _links->lid());
