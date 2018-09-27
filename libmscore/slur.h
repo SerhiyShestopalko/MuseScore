@@ -29,6 +29,24 @@ class MuseScoreView;
 class ChordRest;
 struct SlurPos;
 
+
+//---------------------------------------------------------
+//   PointsForDrawingSlurSegment
+//---------------------------------------------------------
+struct PointsForDrawingSlurSegment {
+  bool needBack;
+  double sinb;
+  QPointF p1;
+  QPointF p2;
+  QPointF p3;
+  QPointF p3o;
+  QPointF p4;
+  QPointF p4o;
+  QPointF th;
+  QPointF shiftBeginPoint;
+  QPointF shiftEndPoint;
+};
+
 //---------------------------------------------------------
 //   SlurPos
 //---------------------------------------------------------
@@ -71,6 +89,10 @@ class SlurSegment : public SpannerSegment {
       QPainterPath path;
       QPainterPath shapePath;
       QPointF autoAdjustOffset;
+
+      PointsForDrawingSlurSegment pointsForDrawingSlurSegment;
+
+      void writePointsForDrawingSlurSegment(Xml& xml) const;
 
       void computeBezier();
       void changeAnchor(MuseScoreView*, Grip, Element*);

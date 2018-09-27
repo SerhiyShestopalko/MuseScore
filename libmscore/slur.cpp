@@ -196,10 +196,26 @@ bool SlurSegment::edit(MuseScoreView* viewer, Grip curGrip, int key, Qt::Keyboar
       return true;
       }
 
+
+void SlurSegment::writePointsForDrawingSlurSegment(Xml &xml) const
+{
+    xml.tag("needBack", this->pointsForDrawingSlurSegment.needBack);
+    xml.tag("p1", this->pointsForDrawingSlurSegment.p1);
+    xml.tag("p2", this->pointsForDrawingSlurSegment.p2);
+    xml.tag("p3", this->pointsForDrawingSlurSegment.p3);
+    xml.tag("p3o", this->pointsForDrawingSlurSegment.p3o);
+    xml.tag("p4", this->pointsForDrawingSlurSegment.p4);
+    xml.tag("p4o", this->pointsForDrawingSlurSegment.p4o);
+    xml.tag("th", this->pointsForDrawingSlurSegment.th);
+    xml.tag("sinb", this->pointsForDrawingSlurSegment.sinb);
+    xml.tag("shiftBeginPoint", this->pointsForDrawingSlurSegment.shiftBeginPoint);
+    xml.tag("shiftEndPoint", this->pointsForDrawingSlurSegment.shiftEndPoint);
+
+}
+
 //---------------------------------------------------------
 //   changeAnchor
 //---------------------------------------------------------
-
 void SlurSegment::changeAnchor(MuseScoreView* viewer, Grip curGrip, Element* element)
       {
       if (curGrip == Grip::START) {
@@ -426,22 +442,25 @@ void SlurSegment::editDrag(const EditData& ed)
 
 void SlurSegment::writeSlur(Xml& xml, int no) const
       {
-      if (ups(Grip::START).off.isNull()
-         && ups(Grip::END).off.isNull()
-         && ups(Grip::BEZIER1).off.isNull()
-         && ups(Grip::BEZIER2).off.isNull()
-         && userOff().isNull()
-         && visible()
-         && (color() == Qt::black)
-            )
-            return;
+//      if (ups(Grip::START).off.isNull()
+//         && ups(Grip::END).off.isNull()
+//         && ups(Grip::BEZIER1).off.isNull()
+//         && ups(Grip::BEZIER2).off.isNull()
+//         && userOff().isNull()
+//         && visible()
+//         && (color() == Qt::black)
+//            )
+//            return;
 
       xml.stag(QString("SlurSegment no=\"%1\"").arg(no));
+
+      writePointsForDrawingSlurSegment(xml);
 
       writeProperty(xml, P_ID::SLUR_UOFF1);
       writeProperty(xml, P_ID::SLUR_UOFF2);
       writeProperty(xml, P_ID::SLUR_UOFF3);
       writeProperty(xml, P_ID::SLUR_UOFF4);
+      //xml.("SlurDirection", this->)
       Element::writeProperties(xml);
       xml.etag();
       }
@@ -566,6 +585,20 @@ void Slur::computeBezier(SlurSegment* ss, QPointF p6o)
       if (lineType() == 0)
             ss->path.cubicTo(p4 +p4o + th, p3 + p3o + th, QPointF());
 
+      //save points in pointsForDrawingSlurSegment
+      ss->pointsForDrawingSlurSegment.p2 = p2;
+      ss->pointsForDrawingSlurSegment.p3 = p3;
+      ss->pointsForDrawingSlurSegment.p3o = p3o;
+      ss->pointsForDrawingSlurSegment.p4 = p4;
+      ss->pointsForDrawingSlurSegment.p4o = p4o;
+      ss->pointsForDrawingSlurSegment.th = th;
+      ss->pointsForDrawingSlurSegment.needBack = (lineType() == 0);
+      ss->pointsForDrawingSlurSegment.sinb = sinb;
+      ss->pointsForDrawingSlurSegment.shiftBeginPoint = ss->ups(Grip::START).off;
+      ss->pointsForDrawingSlurSegment.shiftBeginPoint.rx() *= _spatium;
+      ss->pointsForDrawingSlurSegment.shiftEndPoint = ss->ups(Grip::END).off;
+      ss->pointsForDrawingSlurSegment.shiftEndPoint.rx() *= _spatium;
+
       th = QPointF(0.0, 3.0 * w);
       ss->shapePath = QPainterPath();
       ss->shapePath.moveTo(QPointF());
@@ -587,6 +620,8 @@ void Slur::computeBezier(SlurSegment* ss, QPointF p6o)
       QPointF staffOffset;
       if (ss->system() && ss->track() >= 0)
             staffOffset = QPointF(0.0, -ss->system()->staff(ss->staffIdx())->y());
+
+      ss->pointsForDrawingSlurSegment.p1 = QPointF(pp1.x(), (pp1.y() + staffOffset.y()) / _spatium);
 
       ss->path.translate(staffOffset);
       ss->shapePath.translate(staffOffset);

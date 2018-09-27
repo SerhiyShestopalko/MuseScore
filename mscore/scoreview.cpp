@@ -2427,9 +2427,21 @@ void ScoreView::drawElements(QPainter& painter, const QList<Element*>& el)
             if (!e->visible() && (score()->printing() || !score()->showInvisible()))
                   continue;
             QPointF pos(e->pagePos());
+//            if(e->type() == Element::Type::SLUR_SEGMENT) {
+//                pos.setX(0.f);
+//            }
+
             painter.translate(pos);
-            e->draw(&painter);
+//            if(e->type() != Element::Type::SLUR_SEGMENT) {
+//                painter.translate(pos);
+//            }
+
+            e->draw(&painter);      
+
             painter.translate(-pos);
+//            if(e->type() != Element::Type::SLUR_SEGMENT) {
+//                painter.translate(-pos);
+//            }
             if (MScore::debugMode && e->selected())
                   drawDebugInfo(painter, e);
             }
