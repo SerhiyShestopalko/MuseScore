@@ -121,6 +121,20 @@ void Tie::computeBezier(SlurSegment* ss, QPointF p6o)
       if (lineType() == 0)
             ss->path.cubicTo(p4 +p4o + th, p3 + p3o + th, QPointF());
 
+      //save points in pointsForDrawingSlurSegment
+      ss->pointsForDrawingSlurSegment.p2 = p2;
+      ss->pointsForDrawingSlurSegment.p3 = p3;
+      ss->pointsForDrawingSlurSegment.p3o = p3o;
+      ss->pointsForDrawingSlurSegment.p4 = p4;
+      ss->pointsForDrawingSlurSegment.p4o = p4o;
+      ss->pointsForDrawingSlurSegment.th = th;
+      ss->pointsForDrawingSlurSegment.needBack = (lineType() == 0);
+      ss->pointsForDrawingSlurSegment.sinb = sinb;
+      ss->pointsForDrawingSlurSegment.shiftBeginPoint = ss->ups(Grip::START).off;
+      ss->pointsForDrawingSlurSegment.shiftBeginPoint.rx() *= _spatium;
+      ss->pointsForDrawingSlurSegment.shiftEndPoint = ss->ups(Grip::END).off;
+      ss->pointsForDrawingSlurSegment.shiftEndPoint.rx() *= _spatium;
+
       th = QPointF(0.0, 3.0 * w);
       ss->shapePath = QPainterPath();
       ss->shapePath.moveTo(QPointF());
@@ -142,6 +156,8 @@ void Tie::computeBezier(SlurSegment* ss, QPointF p6o)
       QPointF staffOffset;
       if (ss->system() && ss->track() >= 0)
             staffOffset = QPointF(0.0, -ss->system()->staff(ss->staffIdx())->y());
+
+      ss->pointsForDrawingSlurSegment.p1 = QPointF(pp1.x(), (pp1.y() + staffOffset.y()) / _spatium);
 
       ss->path.translate(staffOffset);
       ss->shapePath.translate(staffOffset);
