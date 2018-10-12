@@ -2321,6 +2321,12 @@ void Text::writeProperties(Xml& xml, bool writeText, bool writeStyle) const
             t.replace("<sym>metA",       "<sym>unicodeA");
             xml.writeXml("text", t);
             }
+
+      if(this->type() == Element::Type::TEMPO_TEXT) {
+          xml.tag("tempoValue", this->_layout.front().fragments().back().text);
+      }
+
+
       }
 
 //---------------------------------------------------------
