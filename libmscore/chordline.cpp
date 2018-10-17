@@ -216,7 +216,7 @@ void ChordLine::write(Xml& xml) const
       xml.tag("lengthX", _lengthX, 0.0);
       xml.tag("lengthY", _lengthY, 0.0);
       Element::writeProperties(xml);
-      if (modified) {
+      if (true || modified) {
             int n = path.elementCount();
             xml.stag("Path");
             for (int i = 0; i < n; ++i) {
