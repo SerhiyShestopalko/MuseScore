@@ -1551,6 +1551,9 @@ void Score::writeSegments(Xml& xml, int strack, int etrack,
                               crWritten = true;
                         }
                   }
+
+
+
             //write spanner ending after the last segment, on the last tick
             if (clip || ls == 0) {
                   auto endIt = spanner().upper_bound(endTick);

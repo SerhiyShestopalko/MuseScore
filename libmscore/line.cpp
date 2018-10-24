@@ -949,6 +949,10 @@ void SLine::writeProperties(Xml& xml) const
             xml.tag("off2", seg->userOff2() / _spatium);
             seg->Element::writeProperties(xml);
             xml.tag("LineWidth", seg->pos2().rx()); // added new tag written line width
+            if(this->type() == Element::Type::GLISSANDO) {
+                xml.tag("pos2Div", seg->pos2() / _spatium);
+                xml.tag("pos2", seg->pos2());
+            }
             xml.etag();
             }
       }
