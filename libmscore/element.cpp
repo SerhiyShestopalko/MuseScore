@@ -664,6 +664,8 @@ void Element::writeProperties(Xml& xml) const
         if(this->isSLineSegment()) {
             if(this->type() == Element::Type::VOLTA_SEGMENT) {
                 xml.tag("offset", userOff() / spatium());
+            } else if(this->type() == Element::Type::GLISSANDO_SEGMENT) {
+                xml.tag("glissandoPos", pos() / spatium());
             } else {
                 xml.tag("pos", pos() / score()->spatium()); }
         }
