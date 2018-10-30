@@ -1491,7 +1491,10 @@ void Score::writeSegments(Xml& xml, int strack, int etrack,
                   if (!e || !xml.canWrite(e))
                         continue;
 
-                  if (e->generated() && e->type() != Ms::Element::Type::BAR_LINE && e->type() != Ms::Element::Type::CLEF) { //allows to write clef and barline tags to file always
+                  if (e->generated()
+                          && e->type() != Ms::Element::Type::BAR_LINE
+                          && e->type() != Ms::Element::Type::CLEF
+                          && e->type() != Ms::Element::Type::KEYSIG) { //allows to write clef and barline tags to file always
 #if 0
                         if ((xml.curTick - xml.tickDiff) == 0) {
                               if (e->type() == Element::Type::CLEF) {
