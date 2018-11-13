@@ -618,6 +618,15 @@ void Tuplet::write(Xml& xml) const
             xml.tag("Tuplet", tuplet()->id());
       Element::writeProperties(xml);
 
+      xml.stag(QString("Brackets"));
+      for(int i=0; i<4 ; i++) {
+          xml.tag(QString("BracketL"), this->bracketL[i]);
+      }
+      for(int i=0; i<3 ; i++) {
+          xml.tag(QString("BracketR"), this->bracketR[i]);
+      }
+      xml.etag();
+
       writeProperty(xml, P_ID::DIRECTION);
       writeProperty(xml, P_ID::NUMBER_TYPE);
       writeProperty(xml, P_ID::BRACKET_TYPE);
