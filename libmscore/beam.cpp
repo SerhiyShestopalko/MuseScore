@@ -2000,6 +2000,7 @@ void Beam::write(Xml& xml) const
       if (_elements.isEmpty())
             return;
       xml.stag(QString("Beam id=\"%1\"").arg(_id));
+      xml.tag("CountOfElements", _elements.size());
       Element::writeProperties(xml);
 
       writeProperty(xml, P_ID::STEM_DIRECTION);

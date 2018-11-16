@@ -1300,7 +1300,7 @@ bool ChordRest::isGraceAfter() const
 void ChordRest::writeBeam(Xml& xml)
       {
       Beam* b = beam();
-      if (b && b->elements().front() == this && (MScore::testMode || !b->generated())) {
+      if (b && b->elements().front() == this && (MScore::testMode || !b->generated() || !b->elements().empty() )) {
             b->setId(xml.beamId++);
             b->write(xml);
             }

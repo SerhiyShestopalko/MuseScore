@@ -695,6 +695,10 @@ void Element::writeProperties(Xml& xml) const
             xml.tag("pos", pos() / score()->spatium());
         }
 
+        if(this->type() == Element::Type::TEXT) {
+            xml.tag("pos", pos() / score()->spatium());
+        }
+
 
 
       //copy paste should not keep links

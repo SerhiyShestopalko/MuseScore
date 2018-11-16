@@ -119,11 +119,27 @@ void TremoloBar::draw(QPainter* painter) const
 void TremoloBar::write(Xml& xml) const
       {
       xml.stag("TremoloBar");
+      xml.tag("PagePossition", this->pagePos());
+       xml.tag("pos", pos() / score()->spatium());
+
       writeProperty(xml, P_ID::MAG);
       for (const PitchValue& v : _points) {
             xml.tagE(QString("point time=\"%1\" pitch=\"%2\" vibrato=\"%3\"")
                .arg(v.time).arg(v.pitch).arg(v.vibrato));
             }
+
+      qreal _spatium = spatium();
+
+      int n    = _points.size();
+
+      qreal timeFactor  = 10.0 / _userMag;
+      qreal pitchFactor = 25.0 / _userMag;
+      for (int pt = 0; pt < n; ++pt) {
+          QPointF p(_points[pt].time/timeFactor, -_points[pt].pitch/pitchFactor-_spatium*3 / score()->spatium());
+          xml.tag("TremoloBarPoint", p);
+      }
+
+
       xml.etag();
       }
 

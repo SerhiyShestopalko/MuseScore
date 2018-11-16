@@ -620,10 +620,12 @@ void Tuplet::write(Xml& xml) const
 
       xml.stag(QString("Brackets"));
       for(int i=0; i<4 ; i++) {
-          xml.tag(QString("BracketL"), this->bracketL[i]);
+          QPointF p(this->bracketL[i].x(), this->bracketL[i].y() / score()->spatium());
+          xml.tag(QString("BracketL"), p);
       }
       for(int i=0; i<3 ; i++) {
-          xml.tag(QString("BracketR"), this->bracketR[i]);
+          QPointF p(this->bracketR[i].x(), this->bracketR[i].y() / score()->spatium());
+          xml.tag(QString("BracketR"), p);
       }
       xml.etag();
 
