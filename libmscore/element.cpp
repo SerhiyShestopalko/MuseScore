@@ -696,7 +696,7 @@ void Element::writeProperties(Xml& xml) const
         }
 
         if(this->type() == Element::Type::TEXT) {
-            xml.tag("pos", pos() / score()->spatium());
+            xml.tag("textPos", pos() / score()->spatium());
         }
 
 
