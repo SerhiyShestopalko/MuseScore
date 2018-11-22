@@ -33,6 +33,8 @@ class Bend : public Element {
       qreal noteWidth;
       bool _playBend;
 
+      void writeDrawPoints(Xml& xml) const;
+
    public:
       Bend(Score* s);
       virtual Bend* clone() const override        { return new Bend(*this); }

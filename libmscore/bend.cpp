@@ -265,6 +265,7 @@ void Bend::write(Xml& xml) const
             }
       writeProperty(xml, P_ID::PLAY);
       Element::writeProperties(xml);
+      this->writeDrawPoints(xml);
       xml.etag();
       }
 
@@ -336,5 +337,128 @@ QVariant Bend::propertyDefault(P_ID propertyId) const
             }
       }
 
-}
+void Bend::writeDrawPoints(Xml &xml) const
+    {
+     xml.stag("DrawPoints");
 
+    qreal _spatium = spatium();
+
+    const TextStyle* st = &score()->textStyle(TextStyleType::BENCH);
+    QFont f = st->fontPx(_spatium);
+    //painter->setFont(f);
+
+    int n    = _points.size();
+    qreal x  = noteWidth;
+    qreal y  = -_spatium * .8;
+    qreal x2, y2;
+
+    qreal aw = _spatium * .5;
+    QPolygonF arrowUp;
+    arrowUp << QPointF(0, 0) << QPointF(aw*.5, aw) << QPointF(-aw*.5, aw);
+    QPolygonF arrowDown;
+    arrowDown << QPointF(0, 0) << QPointF(aw*.5, -aw) << QPointF(-aw*.5, -aw);
+    QFontMetrics fm(f);
+
+    for (int pt = 0; pt < n; ++pt) {
+          if (pt == (n-1))
+                break;
+          int pitch = _points[pt].pitch;
+          if (pt == 0 && pitch) {
+                y2 = -notePos.y() -_spatium * 2;
+                x2 = x;
+
+                //painter->drawLine(QLineF(x, y, x2, y2));
+                xml.stag("DrawLine");
+                xml.tag("StartPoint", QPointF(x,y));
+                xml.tag("StartPoint", QPointF(x2,y2));
+                xml.etag();
+
+                //painter->setBrush(curColor());
+                //painter->drawPolygon(arrowUp.translated(x2, y2));
+                xml.tag("TrianglePoint", QPointF(x2,y2));
+
+                int idx = (pitch + 12)/25;
+                const char* l = label[idx];
+                QString s(l);
+                qreal textWidth = fm.width(s);
+                qreal textHeight = fm.height();
+                //painter->drawText(QRectF(x2 - textWidth / 2, y2 - textHeight / 2, .0, .0), Qt::AlignVCenter|Qt::TextDontClip, s);
+                xml.tag("TextPoint", QPointF(x2 - textWidth / 2, y2 - textHeight / 2));
+
+                y = y2;
+                }
+          if (pitch == _points[pt+1].pitch) {
+                if (pt == (n-2))
+                      break;
+                x2 = x + _spatium;
+                y2 = y;
+                //painter->drawLine(QLineF(x, y, x2, y2));
+                xml.stag("DrawLine");
+                xml.tag("StartPoint", QPointF(x,y));
+                xml.tag("StartPoint", QPointF(x2,y2));
+                xml.etag();
+                }
+          else if (pitch < _points[pt+1].pitch) {
+                // up
+                x2 = x + _spatium*.5;
+                y2 = -notePos.y() -_spatium * 2;
+                qreal dx = x2 - x;
+                qreal dy = y2 - y;
+
+//                QPainterPath path;
+//                path.moveTo(x, y);
+//                path.cubicTo(x+dx/2, y, x2, y+dy/4, x2, y2);
+//                painter->setBrush(Qt::NoBrush);
+//                painter->drawPath(path);
+
+                xml.stag("BezierPath");
+                xml.tag("BendPoint", QPointF(x,y));
+                xml.tag("BendPoint", QPointF(x+dx/2, y));
+                xml.tag("BendPoint", QPointF(x2, y+dy/4));
+                xml.tag("BendPoint", QPointF(x2, y2));
+                xml.etag();
+
+                //painter->setBrush(curColor());
+                //painter->drawPolygon(arrowUp.translated(x2, y2 ));
+                xml.tag("TrianglePoint", QPointF(x2,y2));
+
+                int idx = (_points[pt+1].pitch + 12)/25;
+                const char* l = label[idx];
+                qreal ty = y2; // - _spatium;
+                //painter->drawText(QRectF(x2, ty, .0, .0),
+                   //Qt::AlignHCenter | Qt::AlignBottom | Qt::TextDontClip, QString(l));
+                xml.tag("TextPoint", QPointF(x2,ty));
+                }
+          else {
+                // down
+                x2 = x + _spatium*.5;
+                y2 = y + _spatium * 3;
+                qreal dx = x2 - x;
+                qreal dy = y2 - y;
+
+//                QPainterPath path;
+//                path.moveTo(x, y);
+//                path.cubicTo(x+dx/2, y, x2, y+dy/4, x2, y2);
+//                painter->setBrush(Qt::NoBrush);
+//                painter->drawPath(path);
+
+                xml.stag("BezierPath");
+                xml.tag("BendPoint", QPointF(x,y));
+                xml.tag("BendPoint", QPointF(x+dx/2, y));
+                xml.tag("BendPoint", QPointF(x2, y+dy/4));
+                xml.tag("BendPoint", QPointF(x2, y2));
+                xml.etag();
+
+//                painter->setBrush(curColor());
+//                painter->drawPolygon(arrowDown.translated(x2, y2));
+
+               xml.tag("TrianglePoint", QPointF(x2,y2));
+
+                }
+          x = x2;
+          y = y2;
+          }
+
+    xml.etag();
+    }
+}
