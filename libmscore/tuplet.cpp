@@ -619,12 +619,13 @@ void Tuplet::write(Xml& xml) const
       Element::writeProperties(xml);
 
       xml.stag(QString("Brackets"));
+      xml.tag("BracketSpatium", score()->spatium());
       for(int i=0; i<4 ; i++) {
-          QPointF p(this->bracketL[i].x(), this->bracketL[i].y() / score()->spatium());
+          QPointF p(this->bracketL[i].x(), this->bracketL[i].y() /*/ score()->spatium()*/);
           xml.tag(QString("BracketL"), p);
       }
       for(int i=0; i<3 ; i++) {
-          QPointF p(this->bracketR[i].x(), this->bracketR[i].y() / score()->spatium());
+          QPointF p(this->bracketR[i].x(), this->bracketR[i].y() /*/ score()->spatium()*/);
           xml.tag(QString("BracketR"), p);
       }
       xml.etag();
