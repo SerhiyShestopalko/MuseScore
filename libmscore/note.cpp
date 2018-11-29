@@ -890,6 +890,8 @@ void Note::write(Xml& xml) const
       foreach (Spanner* e, _spannerBack)
             xml.tagE(QString("endSpanner id=\"%1\"").arg(xml.spannerId(e)));
 
+      xml.tag("isMirror", this->mirror());
+
       xml.etag();
       }
 
