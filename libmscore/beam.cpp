@@ -1648,6 +1648,8 @@ void Beam::layout2(QList<ChordRest*>crl, SpannerSegmentType, int frag)
       int crBase[n];          // offset of beam level 0 for each chord
       bool growDown = _up;
 
+      this->mapBeamingLine.clear();
+
       for (int beamLevel = 0; beamLevel < beamLevels; ++beamLevel) {
 
             // loop through the different groups for this beam level
@@ -1885,6 +1887,8 @@ void Beam::layout2(QList<ChordRest*>crl, SpannerSegmentType, int frag)
                         }
                   else {
                         beamSegments.push_back(new QLineF(x2, ly1, x3, ly2));
+
+                        this->mapBeamingLine[beamLevel].push_back(QPair<int, int>(c1, (x3 >x2) ? c2-1 : 1-c2));
                         }
                   }
             }
@@ -2029,6 +2033,17 @@ void Beam::write(Xml& xml) const
                   xml.tag("l2", int(lrint(f->py2[idx] / _spatium4)));
                   }
             }
+
+      for(auto & beamLevel : this->mapBeamingLine.keys()) {
+          xml.stag(QString("BeamLevel id=\"%1\"").arg(beamLevel));
+          for(auto & pairChords : this->mapBeamingLine.value(beamLevel)) {
+              QPointF pair(pairChords.first, pairChords.second);
+              xml.tag("BeamLine", pair);
+          }
+          xml.etag();
+      }
+
+      xml.tag("SteamDirectionUp", _up);
 
       xml.etag();
       }

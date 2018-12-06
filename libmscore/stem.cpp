@@ -206,6 +206,7 @@ void Stem::write(Xml& xml) const
       {
       xml.stag("Stem");
       Element::writeProperties(xml);
+      xml.tag("StemLenght", _len / score()->spatium());
       if (_userLen != 0.0)
             xml.tag("userLen", _userLen / spatium());
       xml.etag();

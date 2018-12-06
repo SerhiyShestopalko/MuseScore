@@ -958,7 +958,7 @@ void Chord::write(Xml& xml) const
 
       if (_noStem)
             xml.tag("noStem", _noStem);
-      else if (_stem && (_stem->isUserModified() || (_stem->userLen() != 0.0)))
+      else if (_stem && (true || _stem->isUserModified() || (_stem->userLen() != 0.0)))
             _stem->write(xml);
       if (_hook && _hook->isUserModified())
             _hook->write(xml);

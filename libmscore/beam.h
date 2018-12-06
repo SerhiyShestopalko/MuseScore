@@ -35,6 +35,8 @@ struct BeamFragment;
 class Beam : public Element {
       Q_OBJECT
 
+      QMap<unsigned int, QVector<QPair<int, int>>> mapBeamingLine;
+
       QList<ChordRest*> _elements;        // must be sorted by tick
       QList<QLineF*> beamSegments;
       MScore::Direction _direction;
