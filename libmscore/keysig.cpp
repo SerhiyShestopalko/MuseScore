@@ -350,7 +350,7 @@ Space KeySig::space() const
 
 void KeySig::write(Xml& xml) const
       {
-      xml.stag(name());
+      xml.stag(this->generated() ? "KeySignatureGenerated" : name());
       Element::writeProperties(xml);
       if (_sig.isAtonal()) {
             xml.tag("custom", 1);

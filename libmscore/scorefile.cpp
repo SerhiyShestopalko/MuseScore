@@ -1491,23 +1491,28 @@ void Score::writeSegments(Xml& xml, int strack, int etrack,
                   if (!e || !xml.canWrite(e))
                         continue;
 
-                  if (     ( e->generated() && e->type() != Ms::Element::Type::BAR_LINE
-                          && e->type() != Ms::Element::Type::CLEF
-                          && e->type() != Ms::Element::Type::KEYSIG ) ||  e->generated()) { //allows to write clef and barline tags to file always
-#if 0
-                        if ((xml.curTick - xml.tickDiff) == 0) {
-                              if (e->type() == Element::Type::CLEF) {
-                                    if (needTick) {
-                                          xml.tag("tick", segment->tick() - xml.tickDiff);
-                                          xml.curTick = segment->tick();
-                                          needTick = false;
-                                          }
-                                    e->write(xml);
-                                    }
-                              }
-#endif
-                        continue;
-                        }
+                  if(e->generated() && e->type() != Ms::Element::Type::KEYSIG
+                          && e->type() != Ms::Element::Type::BAR_LINE
+                          && e->type() != Ms::Element::Type::CLEF) {
+                      continue;
+                  }
+
+
+//                  if (e->generated())
+//#if 0
+//                      if ((xml.curTick - xml.tickDiff) == 0) {
+//                          if (e->type() == Element::Type::CLEF) {
+//                              if (needTick) {
+//                                  xml.tag("tick", segment->tick() - xml.tickDiff);
+//                                  xml.curTick = segment->tick();
+//                                  needTick = false;
+//                              }
+//                              e->write(xml);
+//                          }
+//                      }
+//#endif
+//                      continue;
+//                  }
                   if (forceTimeSig && track2voice(track) == 0 && segment->segmentType() == Segment::Type::ChordRest && !timeSigWritten && !crWritten) {
                         // we will miss a key sig!
                         if (!keySigWritten) {
