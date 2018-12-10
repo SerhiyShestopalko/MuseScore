@@ -443,7 +443,7 @@ void Clef::read(XmlReader& e)
 
 void Clef::write(Xml& xml) const
       {
-      xml.stag(name());
+      xml.stag(this->generated() ? "ClefGenerated" :name());
 
       xml.tag("ClefType", ClefInfo::tag(this->clefType()));
 

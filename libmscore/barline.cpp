@@ -499,7 +499,7 @@ void BarLine::draw(QPainter* painter) const
 
 void BarLine::write(Xml& xml) const
       {
-      xml.stag("BarLine");
+      xml.stag(this->generated() ? "BarLineGenerated" :"BarLine");
       xml.tag("subtype", barLineTypeName());
       if (_customSubtype)
             xml.tag("customSubtype", _customSubtype);
