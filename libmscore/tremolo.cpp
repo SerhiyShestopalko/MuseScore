@@ -362,6 +362,19 @@ void Tremolo::write(Xml& xml) const
       xml.stag(name());
       xml.tag("subtype", tremoloTypeName());
       Element::writeProperties(xml);
+
+      // output path
+        {
+            int n = path.elementCount();
+            xml.stag("TremoloPath");
+            for (int i = 0; i < n; ++i) {
+                  const QPainterPath::Element& e = path.elementAt(i);
+                  xml.tagE(QString("Element type=\"%1\" x=\"%2\" y=\"%3\"")
+                     .arg(int(e.type)).arg(e.x).arg(e.y));
+                  }
+            xml.etag();
+            }
+
       xml.etag();
       }
 
