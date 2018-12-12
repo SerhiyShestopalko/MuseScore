@@ -964,11 +964,9 @@ void Chord::write(Xml& xml) const
             _hook->write(xml);
       if (_stemSlash && _stemSlash->isUserModified())
             _stemSlash->write(xml);
-      switch(_stemDirection) {
-            case MScore::Direction::UP:   xml.tag("StemDirection", QVariant("up")); break;
-            case MScore::Direction::DOWN: xml.tag("StemDirection", QVariant("down")); break;
-            case MScore::Direction::AUTO: break;
-            }
+
+      xml.tag("StemDirection", QVariant(_up ? "up" : "down"));
+
       for (Note* n : _notes)
             n->write(xml);
       if (_arpeggio)
