@@ -703,6 +703,10 @@ void Element::writeProperties(Xml& xml) const
             xml.tag("ArticulationPos", pos() / score()->spatium());
         }
 
+        if(this->type() == Element::Type::TREMOLO) {
+            xml.tag("TremoloPos", pos() / score()->spatium());
+        }
+
       //copy paste should not keep links
       if (_links && (_links->size() > 1) && !xml.clipboardmode)
             xml.tag("lid", _links->lid());
