@@ -674,37 +674,32 @@ void Element::writeProperties(Xml& xml) const
         if(this->type() == Element::Type::DYNAMIC) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::SLUR_SEGMENT) {
+        else if(this->type() == Element::Type::SLUR_SEGMENT) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::TEMPO_TEXT) {
+        else if(this->type() == Element::Type::TEMPO_TEXT) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::CHORDLINE) {
+        else if(this->type() == Element::Type::CHORDLINE) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::MARKER || this->type() == Element::Type::JUMP) {
+        else if(this->type() == Element::Type::MARKER || this->type() == Element::Type::JUMP) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::TUPLET) {
+        else if(this->type() == Element::Type::TUPLET) {
             xml.tag("pos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::TEXT) {
+        else if(this->type() == Element::Type::TEXT) {
             xml.tag("textPos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::ARTICULATION) {
+        else if(this->type() == Element::Type::ARTICULATION) {
             xml.tag("ArticulationPos", pos() / score()->spatium());
         }
-
-        if(this->type() == Element::Type::TREMOLO) {
+        else if(this->type() == Element::Type::TREMOLO) {
             xml.tag("TremoloPos", pos() / score()->spatium());
+        }
+        else if(this->type() == Element::Type::NOTE) {
+            xml.tag("NotePos", pos() / score()->spatium());
         }
 
       //copy paste should not keep links
