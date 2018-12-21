@@ -701,6 +701,9 @@ void Element::writeProperties(Xml& xml) const
         else if(this->type() == Element::Type::NOTE) {
             xml.tag("NotePos", pos() / score()->spatium());
         }
+        else if(this->type() == Element::Type::REST) {
+            xml.tag("RestPos", pos() / score()->spatium());
+        }
 
       //copy paste should not keep links
       if (_links && (_links->size() > 1) && !xml.clipboardmode)
