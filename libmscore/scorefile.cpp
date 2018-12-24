@@ -1409,10 +1409,18 @@ void Score::writeSegments(Xml& xml, int strack, int etrack,
             bool crWritten = false;      // for forceTimeSig
             bool keySigWritten = false;  // for forceTimeSig
 
+            bool isWrittenTrackTag = false;
+
             for (Segment* segment = fs; segment && segment != ls; segment = segment->next1()) {
                   if (track == 0)
                         segment->setWritten(false);
                   Element* e = segment->element(track);
+
+                  if(track != strack && e && !isWrittenTrackTag) {
+                      xml.tag("VoiceTag", track - strack);
+                      isWrittenTrackTag = true;
+                  }
+
                   //
                   // special case: - barline span > 1
                   //               - part (excerpt) staff starts after
