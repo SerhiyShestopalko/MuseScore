@@ -551,9 +551,13 @@ void Xml::tag(const QString& name, QVariant data)
             case QVariant::Bool:
             case QVariant::Char:
             case QVariant::Int:
+                 *this << "<" << name << ">";
+                 *this << data.toInt();
+                 *this << "</" << ename << ">\n";
+                 break;
             case QVariant::UInt:
                   *this << "<" << name << ">";
-                  *this << data.toInt();
+                  *this << data.toUInt();
                   *this << "</" << ename << ">\n";
                   break;
             case QVariant::Double:
