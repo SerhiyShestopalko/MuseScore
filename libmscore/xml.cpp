@@ -546,6 +546,10 @@ void Xml::tag(const QString& name, QVariant data)
       {
       QString ename(name.split(' ')[0]);
 
+      if("Beam" == name && (data > 50 && data < 0)) {
+          int i = 0;
+      }
+
       putLevel();
       switch(data.type()) {
             case QVariant::Bool:
